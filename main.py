@@ -1,12 +1,14 @@
 # main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import requests, time, hmac, hashlib, json
 from urllib.parse import urlencode
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
 app = FastAPI()
 
 # Monta diretório estático
@@ -18,11 +20,10 @@ def index():
     return FileResponse(os.path.join("static", "index.html"))
 
 # Credenciais Tuya
-CLIENT_ID = "y7c8gu59egmduep9tcwh"
-CLIENT_SECRET = "aae978c6d8054d058da93364a873ee23"
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 TUYA_API = "https://openapi.tuyaus.com"
-
-
+    
 def sha256_hexdigest(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 

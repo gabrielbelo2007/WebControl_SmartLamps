@@ -174,3 +174,89 @@
     color: #333;
     text-transform: uppercase;
   }
+
+  @media (max-width: 768px) {
+    body {
+      padding: 1.5rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    #lamps-container {
+      flex-wrap: wrap;       /* permite múltiplas linhas */
+      gap: 1rem;
+    }
+    .lamp {
+      width: 80px;
+      height: 80px;
+      font-size: 1.25rem;
+    }
+    .lamp-wrapper {
+      gap: 0.25rem;
+    }
+    #buttons {
+      gap: 1rem;
+    }
+    button {
+      min-width: 160px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+  
+  /* Mobile (≤ 480px) */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    #lamps-container {
+      gap: 0.75rem;
+    }
+    .lamp {
+      width: 60px;
+      height: 60px;
+      font-size: 1rem;
+    }
+    #buttons {
+      flex-direction: column;  /* empilha os botões */
+      width: 100%;
+    }
+    button {
+      width: 100%;             /* botão ocupa toda largura */
+      min-width: auto;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    body {
+      padding: 3rem;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 4rem;
+    }
+    #lamps-container {
+      flex-wrap: wrap;       /* continua wrap para não quebrar */
+      gap: 2rem;             /* mais espaçamento entre lâmpadas */
+    }
+    .lamp {
+      width: 120px;
+      height: 120px;
+      font-size: 1.75rem;
+    }
+    .lamp-wrapper {
+      gap: 0.5rem;
+    }
+    #buttons {
+      gap: 2.5rem;
+    }
+    button {
+      min-width: 220px;
+      padding: 1.5rem 2.5rem;
+      font-size: 1.5rem;
+    }
+  }
