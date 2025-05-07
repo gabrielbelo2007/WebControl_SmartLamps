@@ -1,0 +1,176 @@
+/* 1) Variáveis para cores, brilho, fonte e labels */
+@import url('https://fonts.googleapis.com/css?family=Big Shoulders Display');
+
+/* static/css/styles.css */
+
+/* 1) Variáveis */
+:root {
+    --bg-page:         #F3F2EE;
+    --font-family:     'Poppins', sans-serif;
+    --lamp-color:      #555555;
+    --lamp-color-on:   #dc3545;
+    --lamp-bright:     0.6;
+    --lamp-bright-on:  1;
+    --transition:      0.3s ease;
+    --label-bg:        #ffffff;
+    --label-color:     #333333;
+    --label-border:    #dddddd;
+    --label-shadow:    rgba(0,0,0,0.1);
+    --btn-off-bg:      #0B1614;
+    --btn-off-hover:   #1A2A28;
+    --btn-on-bg:       #DC3545;
+    --btn-on-hover:    #B12F3E;
+    --btn-color:       #ffffff;
+  }
+  
+  /* 2) Reset & Body (centra tudo na tela) */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* centra vertical */
+    align-items: center;       /* centra horizontal */
+    min-height: 100vh;
+    font-family: var(--font-family);
+    background: var(--bg-page);
+    color: #333333;
+    padding: 2rem;
+  }
+  
+  /* 3) Título maior e com mais espaçamento */
+  h1 {
+    font-size: 2.75rem;         /* maior */
+    margin-bottom: 3rem; 
+    padding-bottom: 40px;       /* mais distância até o grid */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  
+  /* 4) Grid de lâmpadas (linha única) */
+  #lamps-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+    margin-bottom: 4rem;    /* distância até os botões */
+    position: relative;      
+  }
+
+  .lamp {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: var(--lamp-color);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    filter: brightness(var(--lamp-bright));
+    transition: 
+      background var(--transition), 
+      transform var(--transition),
+      filter var(--transition);
+  }
+  .lamp:hover {
+    transform: translateY(-4px) scale(1.05);
+  }
+  .lamp.selected {
+    background: var(--lamp-color-on);
+    filter: brightness(var(--lamp-bright-on));
+  }
+  
+  /* 5) Sinalizadores “LADO ESQUERDO” e “LADO DIREITO” */
+/* Lado esquerdo: só no primeiro wrapper */
+#lamps-container .lamp-wrapper:nth-child(1) .lamp::before {
+    content: "LADO ESQUERDO";
+    position: absolute;
+    top: -1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--label-bg);
+    color: var(--label-color);
+    border: 1px solid var(--label-border);
+    box-shadow: 0 1px 4px var(--label-shadow);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  
+  /* Lado direito: só no sexto wrapper */
+  #lamps-container .lamp-wrapper:nth-child(6) .lamp::before {
+    content: "LADO DIREITO";
+    position: absolute;
+    top: -1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--label-bg);
+    color: var(--label-color);
+    border: 1px solid var(--label-border);
+    box-shadow: 0 1px 4px var(--label-shadow);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  
+  /* 6) Botões bem maiores e centralizados */
+  #buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+  button {
+    min-width: 200px;
+    padding: 1.25rem 2rem;     /* botões maiores */
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--btn-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+  }
+  #on-btn {
+    background: var(--btn-on-bg);
+  }
+  #on-btn:hover {
+    background: var(--btn-on-hover);
+    transform: scale(1.05);
+  }
+  #off-btn {
+    background: var(--btn-off-bg);
+  }
+  #off-btn:hover {
+    background: var(--btn-off-hover);
+    transform: scale(1.05);
+  }
+
+  .lamp-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Texto de status embaixo da lâmpada */
+  .lamp-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+  }

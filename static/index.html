@@ -1,0 +1,128 @@
+<!-- static/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Controle - Selecione Lâmpadas</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <h1>SELECIONE AS LAMPÂDAS</h1>
+  <div id="lamps-container"></div>
+  <div id="buttons">
+    <button id="on-btn">Ligar Vermelho</button>
+    <button id="off-btn">Desligar</button>
+  </div>
+
+  <script>
+    const lamps = [
+      { id: '1', device_id: 'ebbe3a0e28f1c051e5dut6', selected: false },
+      { id: '2', device_id: 'eb1c33f62ca0c5a746ieh8', selected: false },
+      { id: '3', device_id: 'ID_LAMP3', selected: false },
+      { id: '4', device_id: 'ID_LAMP4', selected: false },
+      { id: '5', device_id: 'ID_LAMP5', selected: false },
+      { id: '6', device_id: 'ID_LAMP6', selected: false }
+    ];
+    let lastSelected = [];
+    const container = document.getElementById('lamps-container');
+    const onBtn = document.getElementById('on-btn');
+    const offBtn = document.getElementById('off-btn');
+
+    lamps.forEach(lamp => {
+    // 1) wrapper vertical
+    const wrapper = document.createElement('div');
+    wrapper.className = 'lamp-wrapper';
+
+    // 2) o quadrado da lâmpada
+    const div = document.createElement('div');
+    div.id = lamp.id;
+    div.className = 'lamp';
+    div.innerText = lamp.id;
+    div.onclick = () => {
+      lamp.selected = !lamp.selected;
+      div.classList.toggle('selected');
+    };
+
+    // 3) o texto de status inicial
+    const statusEl = document.createElement('div');
+    statusEl.className = 'lamp-status';
+    statusEl.innerText = 'DESLIGADA';  // inicia desligada
+
+    // 4) junta tudo
+    wrapper.appendChild(div);
+    wrapper.appendChild(statusEl);
+    container.appendChild(wrapper);
+
+    // 5) guarda a referência para atualizar depois
+    lamp.statusEl = statusEl;
+    });
+
+    function sendCommand(endpoint, body) {
+      return fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+      .then(res => res.json());
+    }
+
+    offBtn.onclick = () => {
+  const ids = lamps.filter(l => l.selected).map(l => l.device_id);
+  if (!ids.length) return alert('Selecione ao menos uma lâmpada.');
+  lastSelected = ids.slice();
+
+  sendCommand('/set_power', { device_ids: ids, state: false })
+    .then(data => {
+      console.log('Desligado:', data);
+      // Atualiza o texto de cada lâmpada selecionada
+      lamps.forEach(l => {
+        if (ids.includes(l.device_id)) {
+          l.statusEl.innerText = 'DESLIGADA';
+        }
+      });
+    })
+    .catch(err => console.error('Erro ao desligar:', err));
+
+  // limpa seleção visual
+  lamps.forEach(l => {
+    if (l.selected) {
+      l.selected = false;
+      document.getElementById(l.id).classList.remove('selected');
+    }
+  });
+};
+
+onBtn.onclick = () => {
+  let ids = lamps.filter(l => l.selected).map(l => l.device_id);
+  if (!ids.length && lastSelected.length) {
+    ids = lastSelected.slice();
+    lamps.forEach(l => {
+      if (ids.includes(l.device_id)) {
+        l.selected = true;
+        document.getElementById(l.id).classList.add('selected');
+      }
+    });
+  }
+  if (!ids.length) return alert('Selecione ao menos uma lâmpada.');
+
+  lastSelected = ids.slice();
+  sendCommand('/set_power', { device_ids: ids, state: true })
+    .then(() => sendCommand(
+      '/set_color',
+      { device_ids: ids, color: { h: 0, s: 100, v: 100 } }
+    ))
+    .then(data => {
+      console.log('Ligou em vermelho:', data);
+      // Atualiza o texto de cada lâmpada selecionada
+      lamps.forEach(l => {
+        if (ids.includes(l.device_id)) {
+          l.statusEl.innerText = 'LIGADA';
+        }
+      });
+    })
+    .catch(err => console.error('Erro ao ligar:', err));
+};
+  </script>
+</body>
+</html>
