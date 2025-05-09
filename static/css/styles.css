@@ -191,6 +191,8 @@
       width: 80px;
       height: 80px;
       font-size: 1.25rem;
+      padding: 30px;
+      margin: 30px;
     }
     .lamp-wrapper {
       gap: 0.25rem;
@@ -218,6 +220,8 @@
       width: 60px;
       height: 60px;
       font-size: 1rem;
+      padding: 30px;
+      margin: 30px;
     }
     #buttons {
       flex-direction: column;  /* empilha os botões */
@@ -247,6 +251,8 @@
       width: 120px;
       height: 120px;
       font-size: 1.75rem;
+      padding: 30px;
+      margin: 30px;
     }
     .lamp-wrapper {
       gap: 0.5rem;
